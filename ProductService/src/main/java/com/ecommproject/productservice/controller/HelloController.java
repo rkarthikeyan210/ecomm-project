@@ -8,22 +8,22 @@ public class HelloController {
 
     //GET /hello
     @GetMapping("")
-    public String sayHello()
+    public Hello sayHello()
     {
-        return "Hello";
+        return new Hello("Hello");
     }
 
     //GET /hello/{name}
     @GetMapping("/{name}")
-    public String helloByName(@PathVariable("name") String name)
+    public Hello helloByName(@PathVariable("name") String name)
     {
-        return "Hello " + name + "!";
+        return new Hello(String.format("Hello %s", name));
     }
 
-    //GET /hello/by-name?[q={xyz}]
-    @GetMapping("/by-name")
-    public String helloQueryParam(@RequestParam(name = "q", defaultValue = "there", required = false) String name)
+    //GET /hello/?name={name}
+    @GetMapping("/")
+    public Hello helloQueryParam(@RequestParam(name = "name", defaultValue = "there", required = false) String name)
     {
-        return "Hello " + name + "!!";
+        return new Hello(String.format("Hello %s, how are you?", name));
     }
 }
