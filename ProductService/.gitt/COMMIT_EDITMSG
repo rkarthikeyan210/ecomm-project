@@ -1,0 +1,4 @@
+Created the first API
+- created /hello API
+- Created /hello/{name
+- Created /hello/by-name?q={name} APIs
