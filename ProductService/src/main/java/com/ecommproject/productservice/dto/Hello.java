@@ -1,4 +1,4 @@
 package com.ecommproject.productservice.dto;
 
-public record ExceptionRecord(String msg) {
+public record Hello(String greetMsg) {
 }

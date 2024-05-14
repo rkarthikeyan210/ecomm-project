@@ -1,6 +1,6 @@
 package com.ecommproject.productservice.controller;
 
-import com.ecommproject.productservice.dto.ExceptionRecord;
+import com.ecommproject.productservice.dto.ErrorResponse;
 import com.ecommproject.productservice.exception.ProductNotFoundException;
 import com.ecommproject.productservice.model.Product;
 import com.ecommproject.productservice.service.ProductService;
@@ -51,8 +51,12 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ExceptionRecord> handleException(Exception ex) {
-        return new ResponseEntity<>(new ExceptionRecord(ex.getMessage()), HttpStatus.NOT_FOUND);
+    //@ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setErrorMessage(ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
