@@ -1,26 +1,42 @@
 package com.ecommproject.productservice.service;
 
+import com.ecommproject.productservice.client.FakeStoreClient;
 import com.ecommproject.productservice.dto.FakeStoreProductDto;
 import com.ecommproject.productservice.model.Product;
 import com.ecommproject.productservice.util.ProductConversion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FakeStoreProductService implements ProductService {
 
-    public RestTemplate restTemplate;
+    public FakeStoreClient fakeStoreClient;
 
     @Autowired
-    public FakeStoreProductService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public FakeStoreProductService(@Qualifier("fakeStoreWebClient") FakeStoreClient fakeStoreClient) {
+        this.fakeStoreClient = fakeStoreClient;
     }
 
     @Override
     public Product getProduct(Long id) {
-        FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
+        FakeStoreProductDto fakeStoreProduct = fakeStoreClient.getProduct(id);
 
-        return ProductConversion.convertToProduct(fakeStoreProductDto);
+        return ProductConversion.convertToProduct(fakeStoreProduct);
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        FakeStoreProductDto[] fakeStoreProducts = fakeStoreClient.getAllProducts();
+
+        ArrayList<Product> products = new ArrayList<>();
+        for (FakeStoreProductDto fakeStoreProduct: fakeStoreProducts) {
+            products.add(ProductConversion.convertToProduct(fakeStoreProduct));
+        }
+
+        return products;
     }
 }
