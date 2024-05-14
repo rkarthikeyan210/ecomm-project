@@ -24,4 +24,24 @@ public class FakeStoreRestTemplateClient implements FakeStoreClient {
         String url = fakeStoreBaseUrl + "/products";
         return restTemplate.getForObject(url, FakeStoreProductDto[].class);
     }
+
+    @Override
+    public FakeStoreProductDto createProduct(FakeStoreProductDto fakeStoreProductDto) {
+        return null;
+    }
+
+    @Override
+    public FakeStoreProductDto updateProduct(Long id, FakeStoreProductDto fakeStoreProductDto) {
+        return null;
+    }
+
+    @Override
+    public FakeStoreProductDto deleteProduct(Long id) {
+        return null;
+    }
+
+    @Override
+    public String[] getAllCategories() {
+        return new String[0];
+    }
 }

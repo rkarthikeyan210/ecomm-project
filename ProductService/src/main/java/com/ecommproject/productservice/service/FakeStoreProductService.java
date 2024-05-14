@@ -39,4 +39,22 @@ public class FakeStoreProductService implements ProductService {
 
         return products;
     }
+
+    @Override
+    public Product createProduct(Product product) {
+        FakeStoreProductDto fakeStoreProduct = fakeStoreClient.createProduct(ProductConversion.convertToFakeStoreProduct(product));
+        return ProductConversion.convertToProduct(fakeStoreProduct);
+    }
+
+    @Override
+    public Product updateProduct(Long id, Product product) {
+        FakeStoreProductDto fakeStoreProduct = fakeStoreClient.updateProduct(id, ProductConversion.convertToFakeStoreProduct(product));
+        return ProductConversion.convertToProduct(fakeStoreProduct);
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        FakeStoreProductDto fakeStoreProduct = fakeStoreClient.deleteProduct(id);
+        return;
+    }
 }

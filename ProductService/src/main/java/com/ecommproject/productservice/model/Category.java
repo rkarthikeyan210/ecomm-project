@@ -1,10 +1,11 @@
 package com.ecommproject.productservice.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
     private Long id;
     private String name;

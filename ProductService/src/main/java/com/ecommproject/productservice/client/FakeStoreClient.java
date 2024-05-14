@@ -8,4 +8,12 @@ public interface FakeStoreClient {
     FakeStoreProductDto getProduct(Long id);
 
     FakeStoreProductDto[] getAllProducts();
+
+    FakeStoreProductDto createProduct(FakeStoreProductDto fakeStoreProductDto);
+
+    FakeStoreProductDto updateProduct(Long id, FakeStoreProductDto fakeStoreProductDto);
+
+    FakeStoreProductDto deleteProduct(Long id);
+
+    String[] getAllCategories();
 }

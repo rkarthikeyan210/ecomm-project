@@ -13,7 +13,9 @@ public class ProductConversion {
             return product;
         }
 
-        product.setId(fakeStoreProductDto.getId());
+        if (fakeStoreProductDto.getId() != null) {
+            product.setId(fakeStoreProductDto.getId());
+        }
         product.setTitle(fakeStoreProductDto.getTitle());
         product.setPrice(fakeStoreProductDto.getPrice());
         product.setDescription(fakeStoreProductDto.getDescription());
@@ -33,7 +35,9 @@ public class ProductConversion {
             return fakeStoreProductDto;
         }
 
-        fakeStoreProductDto.setId(product.getId());
+        if (product.getId() != null) {
+            fakeStoreProductDto.setId(product.getId());
+        }
         fakeStoreProductDto.setTitle(product.getTitle());
         fakeStoreProductDto.setPrice(product.getPrice());
         fakeStoreProductDto.setCategory(product.getCategory().getName());
