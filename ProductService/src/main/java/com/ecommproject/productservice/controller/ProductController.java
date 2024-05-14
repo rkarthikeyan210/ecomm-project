@@ -1,5 +1,7 @@
 package com.ecommproject.productservice.controller;
 
+import com.ecommproject.productservice.dto.ExceptionRecord;
+import com.ecommproject.productservice.exception.ProductNotFoundException;
 import com.ecommproject.productservice.model.Product;
 import com.ecommproject.productservice.service.ProductService;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +22,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable("id") Long productId)
-    {
+    public Product getProduct(@PathVariable("id") Long productId) throws ProductNotFoundException {
         return productService.getProduct(productId);
     }
 
@@ -48,5 +49,10 @@ public class ProductController {
     public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ExceptionRecord> handleException(Exception ex) {
+        return new ResponseEntity<>(new ExceptionRecord(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

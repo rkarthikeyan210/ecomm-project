@@ -1,11 +1,12 @@
 package com.ecommproject.productservice.service;
 
+import com.ecommproject.productservice.exception.ProductNotFoundException;
 import com.ecommproject.productservice.model.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    Product getProduct(Long id);
+    Product getProduct(Long id) throws ProductNotFoundException;
 
     List<Product> getAllProducts();
 

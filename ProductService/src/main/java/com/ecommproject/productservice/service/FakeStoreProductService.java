@@ -2,6 +2,7 @@ package com.ecommproject.productservice.service;
 
 import com.ecommproject.productservice.client.FakeStoreClient;
 import com.ecommproject.productservice.dto.FakeStoreProductDto;
+import com.ecommproject.productservice.exception.ProductNotFoundException;
 import com.ecommproject.productservice.model.Product;
 import com.ecommproject.productservice.util.ProductConversion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,12 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product getProduct(Long id) {
+    public Product getProduct(Long id) throws ProductNotFoundException {
         FakeStoreProductDto fakeStoreProduct = fakeStoreClient.getProduct(id);
+
+        if (fakeStoreProduct == null) {
+            throw new ProductNotFoundException(String.format("Product with id %s is not exist.", id));
+        }
 
         return ProductConversion.convertToProduct(fakeStoreProduct);
     }
