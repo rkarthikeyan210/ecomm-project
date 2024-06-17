@@ -5,6 +5,7 @@ import com.ecommproject.userservice.exception.InvalidUsernameOrPasswordException
 import com.ecommproject.userservice.exception.UserNotFoundException;
 import com.ecommproject.userservice.model.User;
 import com.ecommproject.userservice.repo.UserRepository;
+import com.ecommproject.userservice.util.PublishUserSignupEvent;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,19 +21,28 @@ public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecretKey secretKey;
+    private PublishUserSignupEvent publishUserSignupEvent;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, SecretKey secretKey) {
+    public UserService(
+            UserRepository userRepository,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            SecretKey secretKey,
+            PublishUserSignupEvent publishUserSignupEvent) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.secretKey = secretKey;
+        this.publishUserSignupEvent = publishUserSignupEvent;
     }
 
     @Override
     public User signUp(SignUpRequestDto request, String password) {
         User user = User.from(request);
         user.setHashPassword(bCryptPasswordEncoder.encode(password));
-
-        return userRepository.save(user);
+        //save the user to DB
+        User savedUser = userRepository.save(user);
+        //publish the message to the queue
+        this.publishUserSignupEvent.send(user);
+        return savedUser;
     }
 
     @Override
